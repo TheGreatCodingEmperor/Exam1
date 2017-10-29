@@ -1,0 +1,64 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define inf 1e6
+class node
+{
+	public:
+		node();
+		void ini(int,int,int);
+		int getv(){return v;};
+	private:
+		int v;
+		int r;
+		int w;
+};
+node::node()
+{
+	v=r=w=0;
+}
+void node::ini(int a,int b,int c)
+{
+	v=a;
+	r=b;
+	w=c;
+	return ;
+}
+
+int big(int a,int b)
+{
+	int ans=(a>b)?a:b;
+	return ans;
+}
+
+int risk[40000],weight[40000];
+int main()
+{
+	vector< vector<node> >road; 
+	int ncase,n,m,tmp1,tmp2;
+	int u,v,r,w;
+	int i,j;
+	node tmp;
+	cin>>ncase;
+	while(ncase--)
+	{
+		cin>>n>>m;
+		for(i=1;i<n;i++)
+		{
+			weight[i]=inf;
+			risk[i]=inf;
+		}
+		weight[0]=risk[0]=0;
+		for(i=0;i<m;i++)
+		{
+			cin>>u>>v>>r>>w;
+			tmp.ini(v,r,w);
+			road[u].push_back(tmp);
+		}
+		cout<<road[0][0].getv()<<endl;
+		/*for(i=0;i<n;i++)
+		{
+			cout<<road[i][0].getv()<<endl;
+		}*/
+	}
+	return 0;
+ } 
