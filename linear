@@ -1,0 +1,100 @@
+#include<bits/stdc++.h>
+#include<cstdio>
+using namespace std;
+#define inf 2147483648
+#define ll long long
+
+int cmp(const void *a,const void *b)
+{
+	ll n1=*(ll *)a;
+	ll n2=*(ll *)b;
+	if(n1>n2)return 1;
+	else if(n1==n2)return 0;
+	else return -1;
+}
+
+ll cross(ll ax,ll bx,ll a,ll b)
+{
+	return (b-a)/(ax-bx);
+}
+
+ll line[20000][4];
+int x[50000];
+
+int main(void)
+{
+	int n,m;
+	ll tmp,ans;
+	stack <int> u;
+	int i,j,line_use;
+	while(1)
+	{
+		ans=0;
+		cin>>n;
+		if(n==0)break;
+		cin>>m;
+		for(i=0;i<n;i++)
+		{
+			scanf("%lld%lld",&line[i][0],&line[i][1]);
+			line[i][2]=line[i][3]=inf;
+		}
+		qsort(line,n,sizeof(ll)*4,cmp);
+		line[0][2]*=-1;
+		
+		for(i=0;i<m;i++)
+			scanf("%d",&x[i]);
+		sort(x,x+m);
+		
+		u.push(0);
+		i=0;
+		while(i<n)
+		{
+			line_use=i;
+			for(j=i;j<n;j++)
+			{
+				if(line[i][0]-line[j][0]!=0)
+				{
+					tmp=cross(line[i][0],line[j][0],line[i][1],line[j][1]);
+					if(line[i][3]>tmp)
+					{
+						line[i][3]=tmp;
+						line_use=j; 
+					}
+				}
+			}
+			if(i!=line_use)
+			{
+				line[line_use][2]=line[i][3];
+				i=line_use;
+				u.push(line_use);
+			}
+			else
+				i++;
+		}
+		/*while(!u.empty())
+		{
+			i=u.top();
+			cout<<line[i][0]<<" "<<line[i][1]<<" "<<line[i][2]<<" "<<line[i][3]<<endl;
+			u.pop();
+		}*/
+		for(i=m-1;i>=0;i--)
+		{
+			while(!u.empty())
+			{
+				line_use=u.top();
+				//cout<<x[i]<<" "<<line[u.top()][2]<<" "<<line[u.top()][3]<<endl;
+				if(x[i]<=line[line_use][3]&&x[i]>=line[line_use][2])
+				{
+					ans=ans+line[line_use][0]*x[i]+line[line_use][1];
+					break;
+				}
+				else
+					u.pop();
+			}
+		}
+		while(!u.empty())
+			u.pop();
+		cout<<ans<<endl;
+	}
+	return 0;
+ } 
